@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148896745800",
+    "project_id": "assign-c1353",
+    "storage_bucket": "assign-c1353.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148896745800:android:6fce81c9e047caae624b7d",
+        "android_client_info": {
+          "package_name": "com.example.basicauth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL50LR3uR5WlgdO5lvLy5u15kXFHXAk0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
