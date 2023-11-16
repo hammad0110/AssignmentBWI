@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "148896745800",
-    "project_id": "assign-c1353",
-    "storage_bucket": "assign-c1353.appspot.com"
+    "project_number": "595701540469",
+    "project_id": "auth1-c0c5f",
+    "storage_bucket": "auth1-c0c5f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:148896745800:android:6fce81c9e047caae624b7d",
+        "mobilesdk_app_id": "1:595701540469:android:8f0aa615eb050e67e5ba3c",
         "android_client_info": {
           "package_name": "com.example.basicauth"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCL50LR3uR5WlgdO5lvLy5u15kXFHXAk0Q"
+          "current_key": "AIzaSyCEI7WEPX1Ua3QBBLhD-9d5WqJMEn1TSPs"
         }
       ],
       "services": {

@@ -1,7 +1,8 @@
+import 'package:basicauth/provider/auth_provider.dart';
+import 'package:basicauth/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:phoneauth_firebase/provider/auth_provider.dart';
-import 'package:phoneauth_firebase/screens/welcome_screen.dart';
+
 import 'package:provider/provider.dart';
 
 void main() async {

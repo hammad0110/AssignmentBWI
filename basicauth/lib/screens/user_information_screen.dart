@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:basicauth/model/user_model.dart';
+import 'package:basicauth/provider/auth_provider.dart';
+import 'package:basicauth/screens/home_screen.dart';
+import 'package:basicauth/utils/utils.dart';
+import 'package:basicauth/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:phoneauth_firebase/model/user_model.dart';
-import 'package:phoneauth_firebase/provider/auth_provider.dart';
-import 'package:phoneauth_firebase/screens/home_screen.dart';
-import 'package:phoneauth_firebase/utils/utils.dart';
-import 'package:phoneauth_firebase/widgets/custom_button.dart';
+
 import 'package:provider/provider.dart';
 
 class UserInfromationScreen extends StatefulWidget {

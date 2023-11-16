@@ -1,7 +1,8 @@
+import 'package:basicauth/provider/auth_provider.dart';
+import 'package:basicauth/widgets/custom_button.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:phoneauth_firebase/provider/auth_provider.dart';
-import 'package:phoneauth_firebase/widgets/custom_button.dart';
+
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
