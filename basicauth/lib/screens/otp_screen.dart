@@ -1,6 +1,7 @@
 import 'package:basicauth/provider/auth_provider.dart';
 import 'package:basicauth/screens/home_screen.dart';
 import 'package:basicauth/screens/user_information_screen.dart';
+import 'package:basicauth/screens/welcome_screen.dart';
 import 'package:basicauth/utils/utils.dart';
 import 'package:basicauth/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +29,25 @@ class _OtpScreenState extends State<OtpScreen> {
         child: isLoading == true
             ? const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.purple,
+                  color: Color.fromARGB(255, 25, 99, 255), //rgba(2,65,99,255)
                 ),
               )
             : Center(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
                   child: Column(
                     children: [
+                      Align(
+                        heightFactor: 0,
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Text(
+                              "SKIP",
+                              style: TextStyle(color: Colors.red),
+                            )),
+                      ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: GestureDetector(
@@ -45,36 +56,32 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                       ),
                       Container(
-                        width: 200,
-                        height: 200,
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.purple.shade50,
-                        ),
+                        width: 380,
+                        height: 340,
+                        padding: const EdgeInsets.all(10.0),
                         child: Image.asset(
                           "assets/image2.png",
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Verification",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       const SizedBox(height: 10),
-                      const Text(
-                        "Enter the OTP send to your phone number",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black38,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              new BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 55.0,
+                              ),
+                            ],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(9900))),
+                        height: 100,
+                        width: 160,
+                        child: Image.asset(
+                          fit: BoxFit.fitWidth,
+                          "assets/screen3.png",
                         ),
-                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 33),
                       Pinput(
                         length: 6,
                         showCursor: true,
@@ -84,7 +91,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Colors.purple.shade200,
+                              color: Colors.black45,
                             ),
                           ),
                           textStyle: const TextStyle(
@@ -98,12 +105,23 @@ class _OtpScreenState extends State<OtpScreen> {
                           });
                         },
                       ),
-                      const SizedBox(height: 25),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "Resend Code in 55s",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         child: CustomButton(
-                          text: "Verify",
+                          text: "CONTINUE",
                           onPressed: () {
                             if (otpCode != null) {
                               verifyOtp(context, otpCode!);
@@ -113,22 +131,29 @@ class _OtpScreenState extends State<OtpScreen> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Didn't receive any code?",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black38,
-                        ),
+                      SizedBox(
+                        height: 22,
                       ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        "Resend New Code",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: "By continuing you agree to our ",
+                          style: TextStyle(color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "Terms & Conditions",
+                                style: TextStyle(
+                                    color:
+                                        const Color.fromARGB(255, 5, 63, 244))),
+                            TextSpan(
+                                text: " and ",
+                                style: TextStyle(color: Colors.black)),
+                            TextSpan(
+                                text: "Privacy Policy",
+                                style: TextStyle(
+                                    color:
+                                        const Color.fromARGB(255, 5, 63, 244)))
+                          ],
                         ),
                       ),
                     ],

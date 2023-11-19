@@ -2,18 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>595701540469-ntjisvlop228ti3ffu9396f6fbm840gg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.595701540469-ntjisvlop228ti3ffu9396f6fbm840gg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>595701540469-v1klsn7fn6ng8jhsc7sdeh9921eli54h.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAaH2lU9uvY8rmHbZmvlPrGJsP-Ln8LTIY</string>
+	<string>AIzaSyCB_GbxNHOu6qSvx5JBsmHRM80HgXf_W84</string>
 	<key>GCM_SENDER_ID</key>
-	<string>148896745800</string>
+	<string>595701540469</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.basicauth</string>
 	<key>PROJECT_ID</key>
-	<string>assign-c1353</string>
+	<string>auth1-c0c5f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>assign-c1353.appspot.com</string>
+	<string>auth1-c0c5f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:148896745800:ios:d529c560fee222a1624b7d</string>
+	<string>1:595701540469:ios:f3699cdcb062d627e5ba3c</string>
 </dict>
 </plist>

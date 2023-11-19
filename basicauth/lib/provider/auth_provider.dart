@@ -22,6 +22,7 @@ class AuthProvider extends ChangeNotifier {
   UserModel get userModel => _userModel!;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -45,6 +46,7 @@ class AuthProvider extends ChangeNotifier {
   // signin
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
+      await _firebaseAuth.setSettings(appVerificationDisabledForTesting: true);
       await _firebaseAuth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted:

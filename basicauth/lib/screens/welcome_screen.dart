@@ -27,26 +27,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/image1.png",
+                  "assets/image2.png",
                   height: 300,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Let's get started",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+
                 const SizedBox(height: 10),
-                const Text(
-                  "Never a better time than now to start.",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+
                 const SizedBox(height: 20),
                 // custom button
                 SizedBox(

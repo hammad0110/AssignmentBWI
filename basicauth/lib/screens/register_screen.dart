@@ -1,4 +1,6 @@
 import 'package:basicauth/provider/auth_provider.dart';
+import 'package:basicauth/screens/home_ss.dart';
+import 'package:basicauth/screens/welcome_screen.dart';
 import 'package:basicauth/widgets/custom_button.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
@@ -42,39 +44,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen1(),
+                            ),
+                          );
+                        },
+                        child: Text("SKIP")),
+                  ],
+                ),
                 Container(
-                  width: 200,
-                  height: 200,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.purple.shade50,
-                  ),
+                  width: 380,
+                  height: 360,
+                  padding: const EdgeInsets.all(10.0),
                   child: Image.asset(
                     "assets/image2.png",
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Register",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: 2),
+                Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    new BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 14.0,
+                    ),
+                  ], borderRadius: BorderRadius.all(Radius.circular(800))),
+                  height: 100,
+                  width: 100,
+                  child: Image.asset(
+                    fit: BoxFit.fitWidth,
+                    "assets/image1.png",
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Add your phone number. We'll send you a verification code",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
                 TextFormField(
-                  cursorColor: Colors.purple,
+                  cursorColor: Colors.blueGrey,
                   controller: phoneController,
                   style: const TextStyle(
                     fontSize: 18,
@@ -86,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: "Enter phone number",
+                    hintText: "Enter Mobile Number",
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
@@ -118,6 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Text(
                           "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
                           style: const TextStyle(
+                            height: 3.59,
                             fontSize: 18,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -143,12 +153,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : null,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: CustomButton(
-                      text: "Login", onPressed: () => sendPhoneNumber()),
+                      text: "CONTINUE", onPressed: () => sendPhoneNumber()),
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: "By continuing you agree to our ",
+                    style: TextStyle(color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: "Terms & Conditions",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 5, 63, 244))),
+                      TextSpan(
+                          text: " and ", style: TextStyle(color: Colors.black)),
+                      TextSpan(
+                          text: "Privacy Policy",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 5, 63, 244)))
+                    ],
+                  ),
                 ),
               ],
             ),
