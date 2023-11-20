@@ -1,33 +1,21 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'dart:async';
 
-class Imagedisplay extends StatefulWidget {
-  const Imagedisplay({super.key});
+class FirebaseStorageService {
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  @override
-  State<Imagedisplay> createState() => _ImagedisplayState();
-}
+  Future<List<String>> getImageUrls(List<String> imageNames) async {
+    List<String> urls = [];
 
-class _ImagedisplayState extends State<Imagedisplay> {
-  late String imageurl;
-  final storage = FirebaseStorage.instance;
-  @override
-  void initState() {
-    super.initState();
-    imageurl = '';
-    getImageUrl();
-  }
+    for (String imageName in imageNames) {
+      try {
+        Reference storageReference = _storage.ref().child('images/$imageName');
+        String url = await storageReference.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error fetching image: $e');
+      }
+    }
 
-  Future<void> getImageUrl() async {
-    final ref = storage.ref().child('IMG_4915.JPG');
-    final url = await ref.getDownloadURL();
-    setState(() {
-      imageurl = url;
-    });
-  }
-
-  Widget build(BuildContext context) {
-    return const Placeholder();
+    return urls;
   }
 }

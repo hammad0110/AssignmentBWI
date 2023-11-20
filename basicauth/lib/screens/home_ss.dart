@@ -1,8 +1,10 @@
 import 'package:basicauth/widgets/carousel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen1 extends StatelessWidget {
   const HomeScreen1({super.key});
@@ -16,6 +18,7 @@ class HomeScreen1 extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -83,6 +86,13 @@ class HomeScreen1 extends StatelessWidget {
                             ),
                           ],
                         ),
+                        // Container(
+                        //   alignment: AlignmentDirectional.bottomCenter,
+                        //   height: 100,
+                        //   width: 40,
+                        //   child: Image.network(
+                        //       "https://firebasestorage.googleapis.com/v0/b/auth1-c0c5f.appspot.com/o/screen4.png?alt=media&token=2a8e248f-12e2-4bab-a6f2-193059c5e428"),
+                        // ),
                         CustomSearchBar(),
                       ],
                     ),
@@ -101,27 +111,69 @@ class HomeScreen1 extends StatelessWidget {
               child: Column(
                 children: [
                   const HorizontalText(),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('services')
-                        .snapshots(),
+                  FutureBuilder<ListResult>(
+                    future: FirebaseStorage.instance
+                        .ref()
+                        .child('Featured services')
+                        .listAll(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                        AsyncSnapshot<ListResult> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator(
-                          color: Colors.white,
+                          color: Colors.purple,
                         );
                       }
 
-                      if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
                         return SizedBox(
-                          height: 100,
+                          height: 150,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.size,
+                            itemCount: snapshot.data!.items.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return CategoryCard(
-                                  e: snapshot.data!.docs[index]);
+                              var item = snapshot.data!.items[index];
+
+                              return FutureBuilder(
+                                future: item.getDownloadURL(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> urlSnapshot) {
+                                  if (urlSnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container(); // Placeholder while loading the image
+                                  }
+
+                                  if (urlSnapshot.hasError) {
+                                    // Handle error
+                                    return Container();
+                                  }
+
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: 12.0),
+                                    height: 140,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(urlSnapshot.data!),
+                                        fit: BoxFit.fill,
+                                      ),
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      // child: SizedBox(
+                                      //   width: 80,
+                                      //   height: 22,
+                                      //   child: Text(
+                                      //     item.name, // Assuming the name is stored as the item's name in Storage
+                                      //     style: const TextStyle(
+                                      //         color: Colors.white),
+                                      //     textAlign: TextAlign.center,
+                                      //   ),
+                                      // ),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         );
@@ -135,18 +187,15 @@ class HomeScreen1 extends StatelessWidget {
             ),
             //  HorizontalText()
             Padding(
-              padding: const EdgeInsets.only(left: 18, top: 16),
+              padding: EdgeInsets.only(left: 18, top: 16),
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Text(
-                        "Best Specialists",
-                        style: TextStyle(
-                            color: Color(0xff721c80),
-                            //letterSpacing: 1.07,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                        "Category",
+                        style: (GoogleFonts.openSans(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
                       ),
                       Spacer(
                         flex: 8,
@@ -170,50 +219,72 @@ class HomeScreen1 extends StatelessWidget {
                   const SizedBox(
                     height: 18,
                   ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('workers')
-                        .snapshots(),
+                  FutureBuilder<ListResult>(
+                    future: FirebaseStorage.instance
+                        .ref()
+                        .child('Featured services')
+                        .listAll(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                        AsyncSnapshot<ListResult> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator(
                           color: Colors.purple,
                         );
                       }
+
                       if (snapshot.hasData) {
                         return SizedBox(
-                          height: 160,
+                          height: 150,
                           child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.size,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: const EdgeInsets.only(right: 12.0),
-                                height: 160,
-                                width: 120,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                          snapshot.data?.docs[index]["img"],
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.items.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var item = snapshot.data!.items[index];
+
+                                return FutureBuilder(
+                                  future: item.getDownloadURL(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String> urlSnapshot) {
+                                    if (urlSnapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(); // Placeholder while loading the image
+                                    }
+
+                                    if (urlSnapshot.hasError) {
+                                      // Handle error
+                                      return Container();
+                                    }
+
+                                    return Container(
+                                      margin:
+                                          const EdgeInsets.only(right: 12.0),
+                                      height: 140,
+                                      width: 110,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image:
+                                              NetworkImage(urlSnapshot.data!),
+                                          fit: BoxFit.fill,
                                         ),
-                                        fit: BoxFit.cover),
-                                    borderRadius: BorderRadius.circular(14)),
-                                child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: SizedBox(
-                                      width: 80,
-                                      height: 22,
-                                      child: Text(
-                                        snapshot.data?.docs[index]["name"],
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
+                                        borderRadius: BorderRadius.circular(14),
                                       ),
-                                    )),
-                              );
-                            },
-                          ),
+                                      child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        // child: SizedBox(
+                                        //   width: 80,
+                                        //   height: 22,
+                                        //   child: Text(
+                                        //     item.name, // Assuming the name is stored as the item's name in Storage
+                                        //     style: const TextStyle(
+                                        //         color: Colors.white),
+                                        //     textAlign: TextAlign.center,
+                                        //   ),
+                                        // ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
                         );
                       }
 
@@ -229,62 +300,95 @@ class HomeScreen1 extends StatelessWidget {
               decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
+                    style: BorderStyle.solid,
                     color: Color.fromARGB(255, 220, 218, 218),
-                    width: 0.9,
+                    width: 0.8,
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, right: 18, left: 18, bottom: 20),
+
+            const Padding(
+              padding: EdgeInsets.only(top: 3, right: 18, left: 18, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
-                    children: const [
+                    children: [
                       Icon(
                         Icons.south_america_outlined,
                         size: 28,
-                        color: Color(0xff721c80),
+                        color: Colors.black54,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'website',
+                        '',
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
                   ),
                   Column(
-                    children: const [
+                    children: [
                       Icon(
-                        Icons.discount,
+                        Icons.apps_outlined,
                         size: 28,
-                        color: Color(0xff721c80),
+                        color: Colors.black54,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Offers',
+                        '',
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
                   ),
                   Column(
-                    children: const [
+                    children: [
                       Icon(
-                        Icons.phone_in_talk_sharp,
+                        Icons.calendar_month,
                         size: 28,
-                        color: Color(0xff721c80),
+                        color: Colors.black54,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Call',
+                        '',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.message_outlined,
+                        size: 28,
+                        color: Colors.black54,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '',
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        size: 28,
+                        color: Colors.black54,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '',
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
@@ -307,17 +411,12 @@ class HorizontalText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18, right: 18, bottom: 12),
+      padding: EdgeInsets.only(left: 18, right: 18, bottom: 12),
       child: Row(
-        children: const [
-          Text(
-            "Best Services",
-            style: TextStyle(
-                color: Color(0xff721c80),
-                //letterSpacing: 1.07,
-                fontWeight: FontWeight.bold,
-                fontSize: 20),
-          ),
+        children: [
+          Text("Featured Services",
+              style: GoogleFonts.openSans(
+                  fontSize: 16, fontWeight: FontWeight.w500)),
           Spacer(),
           Text(
             "View all",
@@ -413,5 +512,39 @@ class CustomSearchBar extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class ImageList extends StatelessWidget {
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  final List<String> imagePaths = [
+    'IMG_4915.JPG',
+    'IMG_4916.JPG',
+    // Add more image paths as needed
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: imagePaths.length,
+      itemBuilder: (context, index) {
+        return FutureBuilder(
+          future: storage.ref().child(imagePaths[index]).getDownloadURL(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              String imageUrl = snapshot.data as String;
+              return Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+              );
+            }
+          },
+        );
+      },
+    );
   }
 }

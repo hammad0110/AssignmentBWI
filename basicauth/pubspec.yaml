@@ -45,7 +45,7 @@ dependencies:
   pinput: ^2.2.16
   image_picker: ^0.8.6
   carousel_slider: ^4.2.1
-
+  google_fonts: ^6.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,11 +86,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: OpenSans
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/OpenSans-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  # #         style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
