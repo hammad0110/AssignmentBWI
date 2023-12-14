@@ -134,7 +134,7 @@ class _UserInfromationScreenState extends State<UserInfromationScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
-        cursorColor: Color.fromARGB(2, 65, 99, 255),
+        cursorColor: const Color.fromARGB(2, 65, 99, 255),
         controller: controller,
         keyboardType: inputType,
         maxLines: maxLines,
@@ -143,7 +143,7 @@ class _UserInfromationScreenState extends State<UserInfromationScreen> {
             margin: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Color.fromARGB(2, 65, 99, 255),
+              color: const Color.fromARGB(2, 65, 99, 255),
             ),
             child: Icon(
               icon,
@@ -166,7 +166,7 @@ class _UserInfromationScreenState extends State<UserInfromationScreen> {
           hintText: hintText,
           alignLabelWithHint: true,
           border: InputBorder.none,
-          fillColor: Color.fromARGB(2, 65, 99, 255),
+          fillColor: const Color.fromARGB(2, 65, 99, 255),
           filled: true,
         ),
       ),

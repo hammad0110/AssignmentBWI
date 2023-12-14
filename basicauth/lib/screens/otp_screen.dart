@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:basicauth/provider/auth_provider.dart';
 import 'package:basicauth/screens/home_screen.dart';
 import 'package:basicauth/screens/user_information_screen.dart';
-import 'package:basicauth/screens/welcome_screen.dart';
 import 'package:basicauth/utils/utils.dart';
 import 'package:basicauth/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +21,32 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   String? otpCode;
+  int secondsRemaining = 30;
+  bool enableResend = false;
+  late Timer timer;
+
+  @override
+  initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          enableResend = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final isLoading =
         Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: isLoading == true
             ? const Center(
@@ -63,25 +85,24 @@ class _OtpScreenState extends State<OtpScreen> {
                           "assets/image2.png",
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 3),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             boxShadow: [
-                              new BoxShadow(
+                              BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 55.0,
                               ),
                             ],
                             borderRadius:
                                 BorderRadius.all(Radius.circular(9900))),
-                        height: 100,
-                        width: 160,
+                        height: 120,
+                        width: 140,
                         child: Image.asset(
                           fit: BoxFit.fitWidth,
                           "assets/screen3.png",
                         ),
                       ),
-                      SizedBox(height: 33),
                       Pinput(
                         length: 6,
                         showCursor: true,
@@ -105,18 +126,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           });
                         },
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "Resend Code in 55s",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: 50,
@@ -131,28 +141,56 @@ class _OtpScreenState extends State<OtpScreen> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 22,
+                      const SizedBox(height: 22),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 320,
+                        child: InkWell(
+                          child: Text(
+                            "Didn't receive the OTP? Retry in $secondsRemaining seconds",
+                            style: GoogleFonts.robotoMono(
+                                color: const Color.fromARGB(255, 64, 67, 79),
+                                fontSize: 11),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        width: 90,
+                        child: InkWell(
+                          onTap: () => enableResend ? _resendCode() : null,
+                          child: Text(
+                            "Resend OTP",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: enableResend
+                                    ? const Color.fromARGB(255, 32, 76, 252)
+                                    : Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Raleway'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 19,
                       ),
                       RichText(
                         textAlign: TextAlign.center,
-                        text: TextSpan(
+                        text: const TextSpan(
                           text: "By continuing you agree to our ",
                           style: TextStyle(color: Colors.black),
                           children: <TextSpan>[
                             TextSpan(
                                 text: "Terms & Conditions",
                                 style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 5, 63, 244))),
+                                    color: Color.fromARGB(255, 5, 63, 244))),
                             TextSpan(
                                 text: " and ",
                                 style: TextStyle(color: Colors.black)),
                             TextSpan(
                                 text: "Privacy Policy",
                                 style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 5, 63, 244)))
+                                    color: Color.fromARGB(255, 5, 63, 244)))
                           ],
                         ),
                       ),
@@ -201,5 +239,19 @@ class _OtpScreenState extends State<OtpScreen> {
         );
       },
     );
+  }
+
+  void _resendCode() {
+    //other code here
+    setState(() {
+      secondsRemaining = 30;
+      enableResend = false;
+    });
+  }
+
+  @override
+  dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

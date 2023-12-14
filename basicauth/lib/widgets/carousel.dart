@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class Carousel extends StatelessWidget {
@@ -417,7 +416,7 @@ class Btn extends StatelessWidget {
       width: 90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Color.fromARGB(221, 44, 136, 228),
+        color: const Color.fromARGB(221, 44, 136, 228),
         gradient: const LinearGradient(
           colors: [
             Color.fromARGB(255, 103, 115, 69),

@@ -1,6 +1,5 @@
 import 'package:basicauth/provider/auth_provider.dart';
 import 'package:basicauth/screens/home_ss.dart';
-import 'package:basicauth/screens/welcome_screen.dart';
 import 'package:basicauth/widgets/custom_button.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -56,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           );
                         },
-                        child: Text("SKIP")),
+                        child: const Text("SKIP")),
                   ],
                 ),
                 Container(
@@ -69,8 +69,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 2),
                 Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    new BoxShadow(
+                  decoration: const BoxDecoration(boxShadow: [
+                    BoxShadow(
                       color: Colors.black12,
                       blurRadius: 14.0,
                     ),
@@ -160,25 +160,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: CustomButton(
                       text: "CONTINUE", onPressed: () => sendPhoneNumber()),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 18,
                 ),
                 RichText(
                   textAlign: TextAlign.center,
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: "By continuing you agree to our ",
                     style: TextStyle(color: Colors.black),
                     children: <TextSpan>[
                       TextSpan(
                           text: "Terms & Conditions",
                           style: TextStyle(
-                              color: const Color.fromARGB(255, 5, 63, 244))),
+                              color: Color.fromARGB(255, 5, 63, 244))),
                       TextSpan(
                           text: " and ", style: TextStyle(color: Colors.black)),
                       TextSpan(
                           text: "Privacy Policy",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 5, 63, 244)))
+                          style:
+                              TextStyle(color: Color.fromARGB(255, 5, 63, 244)))
                     ],
                   ),
                 ),

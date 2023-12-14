@@ -36,8 +36,8 @@ class HomeScreen1 extends StatelessWidget {
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment,
                       children: [
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 10,
                             ),
@@ -98,7 +98,7 @@ class HomeScreen1 extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 120,
                   left: 0,
                   right: 0,
@@ -158,7 +158,7 @@ class HomeScreen1 extends StatelessWidget {
                                       ),
                                       borderRadius: BorderRadius.circular(14),
                                     ),
-                                    child: Align(
+                                    child: const Align(
                                       alignment: Alignment.bottomCenter,
                                       // child: SizedBox(
                                       //   width: 80,
@@ -187,7 +187,7 @@ class HomeScreen1 extends StatelessWidget {
             ),
             //  HorizontalText()
             Padding(
-              padding: EdgeInsets.only(left: 18, top: 16),
+              padding: const EdgeInsets.only(left: 18, top: 16),
               child: Column(
                 children: [
                   Row(
@@ -197,21 +197,21 @@ class HomeScreen1 extends StatelessWidget {
                         style: (GoogleFonts.openSans(
                             fontSize: 16, fontWeight: FontWeight.w500)),
                       ),
-                      Spacer(
+                      const Spacer(
                         flex: 8,
                       ),
-                      Text(
+                      const Text(
                         "View all",
                         style: TextStyle(
                           color: Colors.grey,
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.double_arrow_rounded,
                         color: Colors.grey,
                         size: 18,
                       ),
-                      Spacer(
+                      const Spacer(
                         flex: 1,
                       ),
                     ],
@@ -268,7 +268,7 @@ class HomeScreen1 extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(14),
                                       ),
-                                      child: Align(
+                                      child: const Align(
                                         alignment: Alignment.bottomCenter,
                                         // child: SizedBox(
                                         //   width: 80,
@@ -411,20 +411,20 @@ class HorizontalText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 18, right: 18, bottom: 12),
+      padding: const EdgeInsets.only(left: 18, right: 18, bottom: 12),
       child: Row(
         children: [
           Text("Featured Services",
               style: GoogleFonts.openSans(
                   fontSize: 16, fontWeight: FontWeight.w500)),
-          Spacer(),
-          Text(
+          const Spacer(),
+          const Text(
             "View all",
             style: TextStyle(
               color: Colors.grey,
             ),
           ),
-          Icon(
+          const Icon(
             Icons.double_arrow_rounded,
             color: Colors.grey,
             size: 18,
@@ -481,20 +481,20 @@ class CategoryCard extends StatelessWidget {
 }
 
 class CustomSearchBar extends StatelessWidget {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(13, 1, 13, 0),
+        padding: const EdgeInsets.fromLTRB(13, 1, 13, 0),
         child: AppBar(
           shadowColor: Colors.white60,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
           backgroundColor: Colors.white10,
           elevation: 1.0, // Remove the shadow
-          leading:
-              Icon(CupertinoIcons.search, color: Colors.black26), // Search icon
-          title: TextField(
+          leading: const Icon(CupertinoIcons.search,
+              color: Colors.black26), // Search icon
+          title: const TextField(
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               hintText: 'Search', // Hint text
@@ -504,7 +504,7 @@ class CustomSearchBar extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              icon: Icon(CupertinoIcons.line_horizontal_3_decrease_circle,
+              icon: const Icon(CupertinoIcons.line_horizontal_3_decrease_circle,
                   color: Colors.black26), // Settings icon
               onPressed: () {
                 // Handle settings icon tap
@@ -532,7 +532,7 @@ class ImageList extends StatelessWidget {
           future: storage.ref().child(imagePaths[index]).getDownloadURL(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {

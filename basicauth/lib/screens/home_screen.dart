@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(2, 65, 99, 255),
-        title: const Text("FlutterPhone Auth"),
+        title: const Text(" Auth"),
         actions: [
           IconButton(
             onPressed: () {
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            backgroundColor: Color.fromARGB(2, 65, 99, 255),
+            backgroundColor: const Color.fromARGB(2, 65, 99, 255),
             backgroundImage: NetworkImage(ap.userModel.profilePic),
             radius: 50,
           ),

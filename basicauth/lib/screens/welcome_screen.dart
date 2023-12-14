@@ -19,6 +19,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final ap = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Padding(

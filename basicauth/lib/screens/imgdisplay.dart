@@ -1,4 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 class FirebaseStorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -12,7 +13,9 @@ class FirebaseStorageService {
         String url = await storageReference.getDownloadURL();
         urls.add(url);
       } catch (e) {
-        print('Error fetching image: $e');
+        if (kDebugMode) {
+          print('Error fetching image: $e');
+        }
       }
     }
 

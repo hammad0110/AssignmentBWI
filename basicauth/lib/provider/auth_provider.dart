@@ -7,6 +7,7 @@ import 'package:basicauth/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +67,7 @@ class AuthProvider extends ChangeNotifier {
           },
           codeAutoRetrievalTimeout: (verificationId) {});
     } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
       showSnackBar(context, e.message.toString());
     }
   }
@@ -105,10 +107,14 @@ class AuthProvider extends ChangeNotifier {
     DocumentSnapshot snapshot =
         await _firebaseFirestore.collection("users").doc(_uid).get();
     if (snapshot.exists) {
-      print("USER EXISTS");
+      if (kDebugMode) {
+        print("USER EXISTS");
+      }
       return true;
     } else {
-      print("NEW USER");
+      if (kDebugMode) {
+        print("NEW USER");
+      }
       return false;
     }
   }
