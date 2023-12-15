@@ -82,75 +82,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     "assets/image1.png",
                   ),
                 ),
-                TextFormField(
-                  cursorColor: Colors.blueGrey,
-                  controller: phoneController,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      phoneController.text = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Enter Mobile Number",
-                    hintStyle: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Colors.grey.shade600,
+                Container(
+                  height: 65,
+                  child: TextFormField(
+                    cursorColor: Colors.blueGrey,
+                    controller: phoneController,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.black12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.black12),
-                    ),
-                    prefixIcon: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          showCountryPicker(
-                              context: context,
-                              countryListTheme: const CountryListThemeData(
-                                bottomSheetHeight: 550,
-                              ),
-                              onSelect: (value) {
-                                setState(() {
-                                  selectedCountry = value;
+                    onChanged: (value) {
+                      setState(() {
+                        phoneController.text = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Enter Mobile Number",
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.grey.shade600,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.black12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.black12),
+                      ),
+                      prefixIcon: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            showCountryPicker(
+                                context: context,
+                                countryListTheme: const CountryListThemeData(
+                                  bottomSheetHeight: 550,
+                                ),
+                                onSelect: (value) {
+                                  setState(() {
+                                    selectedCountry = value;
+                                  });
                                 });
-                              });
-                        },
-                        child: Text(
-                          "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
-                          style: const TextStyle(
-                            height: 3.59,
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                          },
+                          child: Text(
+                            "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
+                            style: const TextStyle(
+                              height: 3.0,
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
+                      suffixIcon: phoneController.text.length > 9
+                          ? Container(
+                              height: 30,
+                              width: 30,
+                              margin: const EdgeInsets.all(10.0),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green,
+                              ),
+                              child: const Icon(
+                                Icons.done,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            )
+                          : null,
                     ),
-                    suffixIcon: phoneController.text.length > 9
-                        ? Container(
-                            height: 30,
-                            width: 30,
-                            margin: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
-                            ),
-                            child: const Icon(
-                              Icons.done,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          )
-                        : null,
                   ),
                 ),
                 const SizedBox(height: 15),

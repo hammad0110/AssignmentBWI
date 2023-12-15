@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,387 +18,861 @@ class HomeScreen1 extends StatelessWidget {
         titleSpacing: 0,
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  heightFactor: 1,
-                  child: Container(
-                    height: 240,
-                    width: double.infinity,
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment,
-                      children: [
-                        const Row(
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt_circle_fill,
-                              color: Colors.black,
-                              size: 50,
-                            ),
-                            SizedBox(
-                              width: 13,
-                            ),
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              dragStartBehavior: DragStartBehavior.start,
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        heightFactor: 1,
+                        child: Container(
+                          height: 240,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment,
+                            children: [
+                              const Row(
                                 children: [
-                                  Text(
-                                    "Good Morning",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w200),
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                  Text(
-                                    "Sushma Shukla",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ]),
-                            Spacer(),
-                            Icon(
-                              CupertinoIcons.bell,
-                              color: Colors.black,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              CupertinoIcons.bookmark,
-                              color: Colors.black,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
+                                  Icon(
+                                    CupertinoIcons.person_alt_circle_fill,
+                                    color: Colors.black,
+                                    size: 50,
+                                  ),
+                                  SizedBox(
+                                    width: 13,
+                                  ),
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Good Morning",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w200),
+                                        ),
+                                        Text(
+                                          "Sushma Shukla",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ]),
+                                  Spacer(),
+                                  Icon(
+                                    CupertinoIcons.bell,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    CupertinoIcons.bookmark,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              ),
+                              // Container(
+                              //   alignment: AlignmentDirectional.bottomCenter,
+                              //   height: 100,
+                              //   width: 40,
+                              //   child: Image.network(
+                              //       "https://firebasestorage.googleapis.com/v0/b/auth1-c0c5f.appspot.com/o/screen4.png?alt=media&token=2a8e248f-12e2-4bab-a6f2-193059c5e428"),
+                              // ),
+                              CustomSearchBar(),
+                            ],
+                          ),
                         ),
-                        // Container(
-                        //   alignment: AlignmentDirectional.bottomCenter,
-                        //   height: 100,
-                        //   width: 40,
-                        //   child: Image.network(
-                        //       "https://firebasestorage.googleapis.com/v0/b/auth1-c0c5f.appspot.com/o/screen4.png?alt=media&token=2a8e248f-12e2-4bab-a6f2-193059c5e428"),
-                        // ),
-                        CustomSearchBar(),
+                      ),
+                      const Positioned(
+                        top: 120,
+                        left: 0,
+                        right: 0,
+                        child: Carousel(),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 90),
+                    child: Column(
+                      children: [
+                        const HorizontalText(),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
+                              );
+                            }
+
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!.items.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var item = snapshot.data!.items[index];
+
+                                    return FutureBuilder(
+                                      future: item.getDownloadURL(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<String> urlSnapshot) {
+                                        if (urlSnapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Container(); // Placeholder while loading the image
+                                        }
+
+                                        if (urlSnapshot.hasError) {
+                                          // Handle error
+                                          return Container();
+                                        }
+
+                                        return Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 12.0),
+                                          height: 140,
+                                          width: 110,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  urlSnapshot.data!),
+                                              fit: BoxFit.fill,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                          ),
+                                          child: const Align(
+                                            alignment: Alignment.bottomCenter,
+                                            // child: SizedBox(
+                                            //   width: 80,
+                                            //   height: 22,
+                                            //   child: Text(
+                                            //     item.name, // Assuming the name is stored as the item's name in Storage
+                                            //     style: const TextStyle(
+                                            //         color: Colors.white),
+                                            //     textAlign: TextAlign.center,
+                                            //   ),
+                                            // ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
                       ],
                     ),
                   ),
-                ),
-                const Positioned(
-                  top: 120,
-                  left: 0,
-                  right: 0,
-                  child: Carousel(),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 90),
-              child: Column(
-                children: [
-                  const HorizontalText(),
-                  FutureBuilder<ListResult>(
-                    future: FirebaseStorage.instance
-                        .ref()
-                        .child('Featured services')
-                        .listAll(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<ListResult> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator(
-                          color: Colors.purple,
-                        );
-                      }
-
-                      if (snapshot.hasData) {
-                        return SizedBox(
-                          height: 150,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.items.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              var item = snapshot.data!.items[index];
-
-                              return FutureBuilder(
-                                future: item.getDownloadURL(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<String> urlSnapshot) {
-                                  if (urlSnapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Container(); // Placeholder while loading the image
-                                  }
-
-                                  if (urlSnapshot.hasError) {
-                                    // Handle error
-                                    return Container();
-                                  }
-
-                                  return Container(
-                                    margin: const EdgeInsets.only(right: 12.0),
-                                    height: 140,
-                                    width: 110,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(urlSnapshot.data!),
-                                        fit: BoxFit.fill,
-                                      ),
-                                      borderRadius: BorderRadius.circular(14),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.bottomCenter,
-                                      // child: SizedBox(
-                                      //   width: 80,
-                                      //   height: 22,
-                                      //   child: Text(
-                                      //     item.name, // Assuming the name is stored as the item's name in Storage
-                                      //     style: const TextStyle(
-                                      //         color: Colors.white),
-                                      //     textAlign: TextAlign.center,
-                                      //   ),
-                                      // ),
-                                    ),
-                                  );
-                                },
+                  //  HorizontalText()
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: (GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                            ),
+                            const Spacer(
+                              flex: 8,
+                            ),
+                            const Text(
+                              "View all",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.double_arrow_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
                               );
-                            },
-                          ),
-                        );
-                      }
+                            }
 
-                      return Container();
-                    },
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var item = snapshot.data!.items[index];
+
+                                      return FutureBuilder(
+                                        future: item.getDownloadURL(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> urlSnapshot) {
+                                          if (urlSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(); // Placeholder while loading the image
+                                          }
+
+                                          if (urlSnapshot.hasError) {
+                                            // Handle error
+                                            return Container();
+                                          }
+
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 12.0),
+                                            height: 140,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    urlSnapshot.data!),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              // child: SizedBox(
+                                              //   width: 80,
+                                              //   height: 22,
+                                              //   child: Text(
+                                              //     item.name, // Assuming the name is stored as the item's name in Storage
+                                              //     style: const TextStyle(
+                                              //         color: Colors.white),
+                                              //     textAlign: TextAlign.center,
+                                              //   ),
+                                              // ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-            //  HorizontalText()
-            Padding(
-              padding: const EdgeInsets.only(left: 18, top: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "Category",
-                        style: (GoogleFonts.openSans(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                      ),
-                      const Spacer(
-                        flex: 8,
-                      ),
-                      const Text(
-                        "View all",
-                        style: TextStyle(
-                          color: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: (GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                            ),
+                            const Spacer(
+                              flex: 8,
+                            ),
+                            const Text(
+                              "View all",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.double_arrow_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
+                              );
+                            }
+
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var item = snapshot.data!.items[index];
+
+                                      return FutureBuilder(
+                                        future: item.getDownloadURL(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> urlSnapshot) {
+                                          if (urlSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(); // Placeholder while loading the image
+                                          }
+
+                                          if (urlSnapshot.hasError) {
+                                            // Handle error
+                                            return Container();
+                                          }
+
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 12.0),
+                                            height: 140,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    urlSnapshot.data!),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              // child: SizedBox(
+                                              //   width: 80,
+                                              //   height: 22,
+                                              //   child: Text(
+                                              //     item.name, // Assuming the name is stored as the item's name in Storage
+                                              //     style: const TextStyle(
+                                              //         color: Colors.white),
+                                              //     textAlign: TextAlign.center,
+                                              //   ),
+                                              // ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: (GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                            ),
+                            const Spacer(
+                              flex: 8,
+                            ),
+                            const Text(
+                              "View all",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.double_arrow_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
+                              );
+                            }
+
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var item = snapshot.data!.items[index];
+
+                                      return FutureBuilder(
+                                        future: item.getDownloadURL(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> urlSnapshot) {
+                                          if (urlSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(); // Placeholder while loading the image
+                                          }
+
+                                          if (urlSnapshot.hasError) {
+                                            // Handle error
+                                            return Container();
+                                          }
+
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 12.0),
+                                            height: 140,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    urlSnapshot.data!),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              // child: SizedBox(
+                                              //   width: 80,
+                                              //   height: 22,
+                                              //   child: Text(
+                                              //     item.name, // Assuming the name is stored as the item's name in Storage
+                                              //     style: const TextStyle(
+                                              //         color: Colors.white),
+                                              //     textAlign: TextAlign.center,
+                                              //   ),
+                                              // ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: (GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                            ),
+                            const Spacer(
+                              flex: 8,
+                            ),
+                            const Text(
+                              "View all",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.double_arrow_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
+                              );
+                            }
+
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var item = snapshot.data!.items[index];
+
+                                      return FutureBuilder(
+                                        future: item.getDownloadURL(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> urlSnapshot) {
+                                          if (urlSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(); // Placeholder while loading the image
+                                          }
+
+                                          if (urlSnapshot.hasError) {
+                                            // Handle error
+                                            return Container();
+                                          }
+
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 12.0),
+                                            height: 140,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    urlSnapshot.data!),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              // child: SizedBox(
+                                              //   width: 80,
+                                              //   height: 22,
+                                              //   child: Text(
+                                              //     item.name, // Assuming the name is stored as the item's name in Storage
+                                              //     style: const TextStyle(
+                                              //         color: Colors.white),
+                                              //     textAlign: TextAlign.center,
+                                              //   ),
+                                              // ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, top: 16),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: (GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                            ),
+                            const Spacer(
+                              flex: 8,
+                            ),
+                            const Text(
+                              "View all",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.double_arrow_rounded,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder<ListResult>(
+                          future: FirebaseStorage.instance
+                              .ref()
+                              .child('Featured services')
+                              .listAll(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<ListResult> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                color: Colors.purple,
+                              );
+                            }
+
+                            if (snapshot.hasData) {
+                              return SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.items.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var item = snapshot.data!.items[index];
+
+                                      return FutureBuilder(
+                                        future: item.getDownloadURL(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<String> urlSnapshot) {
+                                          if (urlSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(); // Placeholder while loading the image
+                                          }
+
+                                          if (urlSnapshot.hasError) {
+                                            // Handle error
+                                            return Container();
+                                          }
+
+                                          return Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 12.0),
+                                            height: 140,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    urlSnapshot.data!),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.bottomCenter,
+                                              // child: SizedBox(
+                                              //   width: 80,
+                                              //   height: 22,
+                                              //   child: Text(
+                                              //     item.name, // Assuming the name is stored as the item's name in Storage
+                                              //     style: const TextStyle(
+                                              //         color: Colors.white),
+                                              //     textAlign: TextAlign.center,
+                                              //   ),
+                                              // ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              );
+                            }
+
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 18),
+                    height: 20,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          style: BorderStyle.solid,
+                          color: Color.fromARGB(255, 220, 218, 218),
+                          width: 0.8,
                         ),
                       ),
-                      const Icon(
-                        Icons.double_arrow_rounded,
-                        color: Colors.grey,
-                        size: 18,
-                      ),
-                      const Spacer(
-                        flex: 1,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  FutureBuilder<ListResult>(
-                    future: FirebaseStorage.instance
-                        .ref()
-                        .child('Featured services')
-                        .listAll(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<ListResult> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator(
-                          color: Colors.purple,
-                        );
-                      }
-
-                      if (snapshot.hasData) {
-                        return SizedBox(
-                          height: 150,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.items.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var item = snapshot.data!.items[index];
-
-                                return FutureBuilder(
-                                  future: item.getDownloadURL(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> urlSnapshot) {
-                                    if (urlSnapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Container(); // Placeholder while loading the image
-                                    }
-
-                                    if (urlSnapshot.hasError) {
-                                      // Handle error
-                                      return Container();
-                                    }
-
-                                    return Container(
-                                      margin:
-                                          const EdgeInsets.only(right: 12.0),
-                                      height: 140,
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              NetworkImage(urlSnapshot.data!),
-                                          fit: BoxFit.fill,
-                                        ),
-                                        borderRadius: BorderRadius.circular(14),
-                                      ),
-                                      child: const Align(
-                                        alignment: Alignment.bottomCenter,
-                                        // child: SizedBox(
-                                        //   width: 80,
-                                        //   height: 22,
-                                        //   child: Text(
-                                        //     item.name, // Assuming the name is stored as the item's name in Storage
-                                        //     style: const TextStyle(
-                                        //         color: Colors.white),
-                                        //     textAlign: TextAlign.center,
-                                        //   ),
-                                        // ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }),
-                        );
-                      }
-
-                      return Container();
-                    },
+                    ),
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 18),
-              height: 20,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    style: BorderStyle.solid,
-                    color: Color.fromARGB(255, 220, 218, 218),
-                    width: 0.8,
-                  ),
-                ),
-              ),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.only(top: 3, right: 18, left: 18, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 0, right: 0, left: 0, bottom: 0),
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              decoration: BoxDecoration(border: Border.all(width: 0.1)),
+              child: const Column(
                 children: [
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.south_america_outlined,
-                        size: 28,
-                        color: Colors.black54,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
-                      )
-                    ],
+                  SizedBox(
+                    height: 14,
                   ),
-                  Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(
-                        Icons.apps_outlined,
-                        size: 28,
-                        color: Colors.black54,
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.south_america_outlined,
+                            size: 28,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 10,
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.apps_outlined,
+                            size: 28,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
                       ),
-                      Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        size: 28,
-                        color: Colors.black54,
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.calendar_month,
+                            size: 28,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 10,
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Icon(
+                            Icons.message_outlined,
+                            size: 28,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
                       ),
-                      Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.person,
+                            size: 28,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.message_outlined,
-                        size: 28,
-                        color: Colors.black54,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.person,
-                        size: 28,
-                        color: Colors.black54,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
-                      )
                     ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
