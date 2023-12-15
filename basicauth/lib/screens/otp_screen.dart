@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:basicauth/provider/auth_provider.dart';
 import 'package:basicauth/screens/home_screen.dart';
+import 'package:basicauth/screens/home_ss.dart';
 import 'package:basicauth/screens/user_information_screen.dart';
 import 'package:basicauth/utils/utils.dart';
 import 'package:basicauth/widgets/custom_button.dart';
@@ -221,7 +222,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 (value) => Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const HomeScreen(),
+                                      builder: (context) => const HomeScreen1(),
                                     ),
                                     (route) => false),
                               ),
